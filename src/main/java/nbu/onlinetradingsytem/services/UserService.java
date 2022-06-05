@@ -7,11 +7,36 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    
+    public UserService(UserRepository repository){
+        this.repository=repository;
+    }
+    public User registerUser(String firstName, String lastName, String username, String password) {
+        boolean userExists = repository.findByUsername(username).isPresent();
+
+        if(userExists) {
+            return null;
+        } else if (firstName == null || lastName == null || username == null || password == null) {
+            return null;
+        } else {
+            User user = new User();
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setUsername(username);
+            user.setPassword(password);
+            return repository.save(user);
+        }
+    }
+    public User auth(String username,String password){
+        return repository.findByUsernameAndPassword(username, password).orElse(null);
+    }
 
     @Transactional
     public List<User> findAll() {
