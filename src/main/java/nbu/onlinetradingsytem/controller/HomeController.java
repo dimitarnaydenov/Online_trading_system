@@ -80,4 +80,11 @@ public class HomeController {
         userService.updateUser(Integer.parseInt(id),userDTO);
         return "redirect:/users";
     }
+    
+    @GetMapping("/deleteUser/{id}")
+    public String deleteUser(@PathVariable("id") int id) {
+        UserService.removeUser(id);
+        return "redirect:/usersPage";
+    }
+    
 }
