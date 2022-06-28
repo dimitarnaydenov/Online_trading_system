@@ -16,10 +16,10 @@ public class UserService {
     private UserRepository userRepository;
     
     public UserService(UserRepository repository){
-        this.repository=repository;
+        this.userRepository=repository;
     }
     public User registerUser(String firstName, String lastName, String username, String password) {
-        boolean userExists = repository.findByUsername(username).isPresent();
+        boolean userExists = userRepository.findByUsername(username).isPresent();
 
         if(userExists) {
             return null;
@@ -31,11 +31,11 @@ public class UserService {
             user.setLastName(lastName);
             user.setUsername(username);
             user.setPassword(password);
-            return repository.save(user);
+            return userRepository.save(user);
         }
     }
     public User auth(String username,String password){
-        return repository.findByUsernameAndPassword(username, password).orElse(null);
+        return userRepository.findByUsernameAndPassword(username, password).orElse(null);
     }
 
     @Transactional
@@ -60,8 +60,8 @@ public class UserService {
 
         userRepository.save(user);
     }
-    
-        public void removeUser(int id) {
+
+    public void removeUser(int id) {
         userRepository.deleteById(id);
     }
 

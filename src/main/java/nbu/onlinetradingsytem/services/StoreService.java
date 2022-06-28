@@ -1,8 +1,7 @@
-package service;
+package nbu.onlinetradingsytem.services;
 
-import model.Store;
-import repository.StoreRepository;
-import org.springframework.stereotype.Service;
+import nbu.onlinetradingsytem.model.Store;
+import nbu.onlinetradingsytem.repositories.StoreRepository;
 import java.util.Optional;
 
 public class StoreService {
