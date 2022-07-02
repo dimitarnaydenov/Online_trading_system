@@ -1,10 +1,13 @@
 package nbu.onlinetradingsytem.services;
 
+import nbu.onlinetradingsytem.model.Store;
 import nbu.onlinetradingsytem.model.Supplier;
 import nbu.onlinetradingsytem.repositories.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class SupplierService {
@@ -33,5 +36,10 @@ public class SupplierService {
     @Transactional
     public void deleteSupplier(Supplier supplier) {
         supplierRepository.delete(supplier);
+    }
+
+    @Transactional
+    public List<Supplier> findAll() {
+        return supplierRepository.findAll();
     }
 }

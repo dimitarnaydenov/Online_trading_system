@@ -1,16 +1,28 @@
 package nbu.onlinetradingsytem.services;
 
 import nbu.onlinetradingsytem.model.Product;
+import nbu.onlinetradingsytem.model.Role;
 import nbu.onlinetradingsytem.model.Supplier;
 import nbu.onlinetradingsytem.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class ProductService {
     @Autowired
     private ProductRepository productRepository;
+
+    @Transactional
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
+
+    public Product findById(int id){
+        return productRepository.findById(id);
+    }
 
     @Transactional
     public void addProduct(Product product){
@@ -43,4 +55,5 @@ public class ProductService {
     public void deleteProduct(Product product) {
         productRepository.delete(product);
     }
+
 }
