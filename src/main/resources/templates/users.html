@@ -28,14 +28,14 @@
                     <th scope="col"></th>
                 </tr>
             </thead>
-            <tbody >
+            <tbody>
             <th:block th:each="user : ${users}">
             <tr>
                 <th scope="row" th:text="${userStat.index+1}">3</th>
-                <td th:text="${user.name}">Peter</td>
-                <td th:text="${user.role.name}">user</td>
-                <td><a class="btn btn-success" th:href="@{'/setRole?id='+${user.id}}">Edit Role</a></td>
-                </th:block>
+                <td th:text="${user.getUsername()}">Peter</td>
+                <td th:text="${user.getRole().getName()}">user</td>
+                <td><a class="btn btn-success" th:href="@{'/setRole?id='+${user.getId()}}">Edit Role</a></td>
+            </th:block>
 
             </tr>
             </th:block>

@@ -1,19 +1,36 @@
 package nbu.onlinetradingsytem.services;
 
+import nbu.onlinetradingsytem.model.Role;
 import nbu.onlinetradingsytem.model.User;
+import nbu.onlinetradingsytem.repositories.RoleRepository;
 import nbu.onlinetradingsytem.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoleRepository roleRepository;
     
     public UserService(UserRepository repository){
         this.userRepository=repository;
@@ -30,7 +47,8 @@ public class UserService {
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setUsername(username);
-            user.setPassword(password);
+            user.setPassword(passwordEncoder.encode(password));
+            user.setRole(roleRepository.findById(3l));
             return userRepository.save(user);
         }
     }
@@ -65,4 +83,24 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (!user.isPresent()) {
+            throw new UsernameNotFoundException("Invalid username or password.");
+        }
+        return new org.springframework.security.core.userdetails.User(user.get().getUsername(),
+                user.get().getPassword(),
+                mapRolesToAuthorities(user.get().getRole())
+               );
+    }
+
+    private List<SimpleGrantedAuthority> mapRolesToAuthorities(Role role) {
+        ArrayList<Role> roles = new ArrayList<Role>();
+        roles.add(role);
+
+        return roles.stream()
+                .map(r -> new SimpleGrantedAuthority(r.getName()))
+                .collect(Collectors.toList());
+    }
 }

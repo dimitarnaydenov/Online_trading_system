@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -25,20 +25,20 @@
                         <div class="col-md-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <h6 class="text-primary">First Name</h6>
-                                <h6 th:text="${user.name}">Peter</h6>
+                                <h6 th:text="${user.getUsername()}">Peter</h6>
 
                             </div>
                         </div>
 
                         <div class="col-md-6 col-sm-6 col-12">
-                        <form th:action="@{/setRole(id=${user.id})}" method="POST">
+                        <form th:action="@{/setRole(id=${user.getId()})}" method="POST">
                             <div class="form-group">
                                 <h6 class="text-primary">Role</h6>
-                                <h6 th:text="${user.role.name}">User</h6>
-                                <select class="custom-select" name="role">
-                                    <option value="user" class="">User</option>
-                                    <option value="moderator" class="" >Moderator</option>
-                                    <option value="administrator" class="">Administrator</option>
+                                <h6 th:text="${user.getRole().getName()}">User</h6>
+                                <select class="custom-select" name="name">
+                                    <option value="USER" class="">User</option>
+                                    <option value="MODERATOR" class="" >Moderator</option>
+                                    <option value="ADMIN" class="">Administrator</option>
                                 </select>
                             </div>
 

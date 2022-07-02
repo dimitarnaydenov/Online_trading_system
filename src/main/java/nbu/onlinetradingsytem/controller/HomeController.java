@@ -1,6 +1,10 @@
 package nbu.onlinetradingsytem.controller;
 
+import nbu.onlinetradingsytem.model.Product;
+import nbu.onlinetradingsytem.model.Role;
 import nbu.onlinetradingsytem.model.User;
+import nbu.onlinetradingsytem.services.ProductService;
+import nbu.onlinetradingsytem.services.RoleService;
 import nbu.onlinetradingsytem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,29 +17,36 @@ import java.util.List;
 public class HomeController {
 
     UserService userService;
+    ProductService productService;
+    RoleService roleService;
 
     @Autowired
-    public HomeController(UserService userService) {
+    public HomeController(UserService userService, ProductService productService, RoleService roleService)
+    {
         this.userService = userService;
+        this.productService = productService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/")
-    public String showHome() {
+    public String showHome(Model model) {
 
-        return "redirect:/users";
+        List<Product> products = productService.findAll();
+        model.addAttribute("products", products);
+        return "index";
     }
 
     @GetMapping("/register")
     public String getRegisterPage(Model model) {
+        System.out.println("register get");
         model.addAttribute("registerRequest", new User());
         return "register";
     }
 
     @PostMapping("/register")
     public String register(@ModelAttribute User user) {
-        System.out.println("register request: " + user);
         User userToRegister = userService.registerUser(user.getFirstName(), user.getLastName(), user.getUsername(), user.getPassword());
-        return userToRegister == null ? "error_page" : "redirect:/login";
+        return /*userToRegister == null ? "error_page" :*/ "redirect:/login";
     }
 
     @GetMapping("/login")
@@ -44,17 +55,17 @@ public class HomeController {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String login(@ModelAttribute User user, Model model) {
-        System.out.println("login request: " + user);
-        User authUser = userService.auth(user.getUsername(), user.getPassword());
-        if(authUser != null) {
-            model.addAttribute("userLogin", authUser.getUsername());
-            return "users";
-        } else {
-            return "error_page";
-        }
-    }
+//    @PostMapping("/login")
+//    public String login(@ModelAttribute User user, Model model) {
+//        System.out.println("login request: " + user);
+//        User authUser = userService.auth(user.getUsername(), user.getPassword());
+//        if(authUser != null) {
+//            model.addAttribute("userLogin", authUser.getUsername());
+//            return "users";
+//        } else {
+//            return "error_page";
+//        }
+//    }
 
     @GetMapping("/users")
     public String showUsers(Model model) {
@@ -73,8 +84,10 @@ public class HomeController {
     }
 
     @PostMapping("/setRole")
-    public String editContact(@ModelAttribute User userDTO, @RequestParam String id) {
-        userService.updateUser(Integer.parseInt(id),userDTO);
+    public String editContact(@ModelAttribute Role role, @RequestParam String id) {
+        User user = userService.findById(Integer.parseInt(id));
+        user.setRole(roleService.findByName(role.getName()));
+        userService.updateUser(Integer.parseInt(id),user);
         return "redirect:/users";
     }
 

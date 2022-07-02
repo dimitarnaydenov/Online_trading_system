@@ -17,7 +17,7 @@
 
         </ul>
         <ul class="nav navbar-nav ml-auto">
-            <li class="nav-item" th:if="${session.LOGGED_USER_ID != null}">
+            <li class="nav-item" sec:authorize="hasAuthority('ADMIN') OR hasAuthority('MODERATOR')">
                 <a class="nav-link" href="/myProfile">My Profile</a>
             </li>
 
@@ -29,7 +29,7 @@
                 <a class="nav-link" href="">Register</a>
             </li>
 
-            <form id="logoutForm" method="post" action="/logout" th:if="${session.LOGGED_USER_ID != null}">
+            <form id="logoutForm" method="post" action="/logout" sec:authorize="isAuthenticated()">
             <li class="nav-item">
                 <a class="nav-link" href="javascript:$('#logoutForm').submit();" value="Logout" >Logout</a>
             </li>
