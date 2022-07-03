@@ -6,12 +6,11 @@ import nbu.onlinetradingsytem.model.Store;
 import nbu.onlinetradingsytem.services.ProductService;
 import nbu.onlinetradingsytem.services.StoreService;
 import nbu.onlinetradingsytem.services.SupplierService;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+@Controller
 public class StoreController {
 
     StoreService storeService;
@@ -65,17 +64,22 @@ public class StoreController {
         return "editProduct";
     }
 
-    @PostMapping("/editProduct")
-    public String editProduct(@ModelAttribute Product product)
+    @PostMapping("/editProduct/{id}")
+    public String editProduct(@PathVariable("id") int id, @ModelAttribute Product product)
     {
         productService.updateProduct(product.getId(),product);
         return "";
     }
 
-    @GetMapping("/deleteProduct/{id}")
-    public String deleteProduct(@PathVariable("id") int id) {
-        productService.deleteProduct(productService.findById(id));
+    @GetMapping("/deleteProduct")
+    public String deleteProduct(@RequestParam String id) {
+        productService.deleteProduct(productService.findById(Integer.parseInt(id)));
         return "redirect:/";
+    }
+
+    @GetMapping("/cart")
+    public String showCart() {
+        return "shoppingcart";
     }
 
 }

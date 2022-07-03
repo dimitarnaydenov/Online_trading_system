@@ -46,10 +46,13 @@ public class Product {
     }
 
     public double getPrice() {
-        if (new Date().after(startDiscount) && new Date().before(endDiscount)) // Problem?
-        {
+        if (startDiscount != null && endDiscount!=null){
+            if (new Date().after(startDiscount) && new Date().before(endDiscount)) // Problem?
+            {
 
+            }
         }
+
         return price;
     }
 

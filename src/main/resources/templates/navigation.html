@@ -17,15 +17,20 @@
 
         </ul>
         <ul class="nav navbar-nav ml-auto">
+
             <li class="nav-item" sec:authorize="hasAuthority('ADMIN') OR hasAuthority('MODERATOR')">
                 <a class="nav-link" href="/myProfile">My Profile</a>
             </li>
 
-            <li class="nav-item" th:if="${session.LOGGED_USER_ID == null}">
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-link" href="/myProfile">My Profile</a>
+            </li>
+
+            <li class="nav-item" sec:authorize="isAnonymous()">
                 <a class="nav-link" href="">Login</a>
             </li>
 
-            <li class="nav-item" th:if="${session.LOGGED_USER_ID == null}">
+            <li class="nav-item" sec:authorize="isAnonymous()">
                 <a class="nav-link" href="">Register</a>
             </li>
 
@@ -33,7 +38,14 @@
             <li class="nav-item">
                 <a class="nav-link" href="javascript:$('#logoutForm').submit();" value="Logout" >Logout</a>
             </li>
+
             </form>
+
+            <button onclick="location.href='/cart'" class="btn btn-outline-dark" type="submit" sec:authorize="isAuthenticated()">
+                <i class="bi bi-cart-fill"></i>
+                Shopping Cart
+                <span class="badge bg-dark text-white ms-1 rounded-pill" id="item-cart-counter"></span>
+            </button>
         </ul>
     </div>
 </nav>

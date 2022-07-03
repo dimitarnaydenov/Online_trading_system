@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <script src="../script.js"></script>
+
+    <title>Trading system</title>
+
+
+</head>
      <!-- Navbar Start -->
      <div class="container-fluid p-0">
         <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-lg-5">
@@ -32,33 +43,43 @@ table, th, td {
   border:1px solid black;
 }
 </style>
-<body>
-
-<h2>Shopping Cart</h2>
-
-<table style="width:100%">
-  <tr>
-    <th> 1</th>
-    <th> 2</th>
-    <th> 3</th>
-    <th> 4</th>
-  </tr>
-  <tr>
-    <td>Product 1</td>
-    <td>Product 2</td>
-    <td>Product 3</td>
-    <td>Product 4</td>
-  </tr>
-  <tr>
-    <td>16</td>
-    <td>14</td>
-    <td>10</td>
-    <td>10</td>
-  </tr>
-</table>
+<body onload="loadProduct()">
 
 
+<header th:insert="navigation :: header"></header>
 
+<div class="container users-table-div ">
+
+    <h2 class="users-title">Shopping cart</h2>
+
+    <table class="table table-hover table-light">
+        <thead class="bg-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Count</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody id="products">
+
+
+        </tbody>
+
+    </table>
+
+
+    <p>Price: <div id="price">0</div> lv.</p>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+        crossorigin="anonymous"></script>
 </body>
 </html>
 
