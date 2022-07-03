@@ -30,19 +30,19 @@
             <div class="col mb-5" th:each="product : ${products}">
                 <div class="card h-100">
                     <!-- Product image-->
-                    <img class="card-img-top" id="imageURL" th:src="${product.getImageURL()}" alt="..." />
+                    <img class="card-img-top" id="imageURL" th:value="${product.getImageURL()}" th:src="${product.getImageURL()}" alt="..." />
                     <!-- Product details-->
                     <div class="card-body p-4">
                         <div class="text-center">
                             <!-- Product name-->
-                            <h5 class="fw-bolder" id="name" th:value="${product.getName()}"></h5>
+                            <h5 class="fw-bolder" id="name" th:value="${product.getName()}" th:text="${product.getName()}"></h5>
                             <!-- Product price-->
-                            <p id="price" th:value="${product.getPrice()}"></p>
+                            <p id="price" th:value="${product.getPrice()}" th:text="${product.getPrice()}"> lv.</p>
                         </div>
                     </div>
 
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" onclick="addProduct(this)" th:id="${product.getId()}" href="#">Add to cart</a></div>
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" sec:authorize="isAuthenticated()" onclick="addProduct(this)" th:id="${product.getId()}" href="#">Add to cart</a></div>
 
                         <div class="text-center mt-3"><a class="btn btn-outline-dark mt-auto btn-warning" sec:authorize="hasAuthority('ADMIN') OR hasAuthority('MODERATOR')" th:href="@{'/editProduct?id='+${product.getId()}}">Edit</a></div>
                         <div class="text-center mt-3"><a class="btn btn-outline-dark mt-auto btn-danger text-white" sec:authorize="hasAuthority('ADMIN') OR hasAuthority('MODERATOR')" th:href="@{'/deleteProduct?id='+${product.getId()}}">Remove</a></div>

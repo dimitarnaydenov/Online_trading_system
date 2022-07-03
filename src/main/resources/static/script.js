@@ -73,3 +73,8 @@ function removeElement(element, id, price,count)
 
 
 }
+
+function buy()
+{
+
+}
