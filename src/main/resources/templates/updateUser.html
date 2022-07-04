@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+</head>
+<body>
+
+	<div class = "container">
+		<div class = "row">
+			<div class ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+				<h1 class = "text-center"> Update User </h1>
+				<div class = "card-body">
+					<form th:action="@{/users/{id} (id=${user.id})}" th:object = "${user}" method="POST">
+						<div class ="form-group">
+							<label> user First Name </label>
+							<input
+							type = "text"
+							name = "firstName"
+							th:field = "*{firstName}"
+							class = "form-control"
+							placeholder="Enter User First Name"
+							/>
+						</div>
+
+						<div class ="form-group">
+							<label> User Last Name </label>
+							<input
+							type = "text"
+							name = "lastName"
+							th:field = "*{lastName}"
+							class = "form-control"
+							placeholder="Enter User Last Name"
+							/>
+						</div>
+
+						<div class ="form-group">
+							<label> Username </label>
+							<input
+							type = "text"
+							name = "Username"
+							th:field = "*{Username}"
+							class = "form-control"
+							placeholder="Enter Username"
+							/>
+						</div>
+
+						<div class = "box-footer">
+							<button type="submit" class = "btn btn-primary">
+								Submit
+							</button>
+						</div>
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
