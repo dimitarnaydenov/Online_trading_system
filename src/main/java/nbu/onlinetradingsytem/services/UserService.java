@@ -1,5 +1,6 @@
 package nbu.onlinetradingsytem.services;
 
+import nbu.onlinetradingsytem.model.Product;
 import nbu.onlinetradingsytem.model.Role;
 import nbu.onlinetradingsytem.model.User;
 import nbu.onlinetradingsytem.repositories.RoleRepository;
@@ -35,6 +36,11 @@ public class UserService implements UserDetailsService {
     public UserService(UserRepository repository){
         this.userRepository=repository;
     }
+
+    public User findByUsername(String username){
+        return userRepository.findByUsername(username).get();
+    }
+
     public User registerUser(String firstName, String lastName, String username, String password) {
         boolean userExists = userRepository.findByUsername(username).isPresent();
 

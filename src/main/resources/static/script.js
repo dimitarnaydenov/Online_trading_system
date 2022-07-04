@@ -76,5 +76,38 @@ function removeElement(element, id, price,count)
 
 function buy()
 {
+    let products = [];
+    if(localStorage.getItem('products')){
+        products = JSON.parse(localStorage.getItem('products'));
+    }
 
+    let ids = [];
+    let counts = [];
+
+    for (let element of products) {
+        if (element !== null){
+            ids.push(parseInt(element['productId']));
+            counts.push(element['count']);
+
+        }
+
+    }
+
+    console.log(ids)
+    console.log(counts)
+
+    $.ajax({
+        type : "POST",
+        url : "/buy",
+        data : {
+            ids: ids,
+            counts: counts
+        },
+        success : function(response) {
+            localStorage.setItem('products', []);
+        },
+        error : function(e) {
+            alert('Error: ' + e);
+        }
+    });
 }

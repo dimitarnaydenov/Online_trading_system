@@ -1,14 +1,14 @@
 package nbu.onlinetradingsytem.controller;
 
-import nbu.onlinetradingsytem.model.Product;
-import nbu.onlinetradingsytem.model.Role;
-import nbu.onlinetradingsytem.model.Store;
-import nbu.onlinetradingsytem.services.ProductService;
-import nbu.onlinetradingsytem.services.StoreService;
-import nbu.onlinetradingsytem.services.SupplierService;
+import nbu.onlinetradingsytem.model.*;
+import nbu.onlinetradingsytem.services.*;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @Controller
 public class StoreController {
@@ -16,11 +16,15 @@ public class StoreController {
     StoreService storeService;
     SupplierService supplierService;
     ProductService productService;
+    UserService userService;
+    BoughtProductsService boughtProductsService;
 
-    public StoreController(StoreService storeService, SupplierService supplierService, ProductService productService) {
+    public StoreController(StoreService storeService, SupplierService supplierService, ProductService productService, UserService userService, BoughtProductsService boughtProductsService) {
         this.storeService = storeService;
         this.supplierService = supplierService;
         this.productService = productService;
+        this.userService = userService;
+        this.boughtProductsService = boughtProductsService;
     }
 
     @GetMapping("/store")
@@ -55,7 +59,7 @@ public class StoreController {
     public String addProduct(@ModelAttribute Product product)
     {
         productService.addProduct(product);
-        return "";
+        return "redirect:/";
     }
 
     @GetMapping("/editProduct")
@@ -80,6 +84,24 @@ public class StoreController {
     @GetMapping("/cart")
     public String showCart() {
         return "shoppingcart";
+    }
+
+    @PostMapping("/buy")
+    public String buy(@RequestParam(value="ids[]") Integer[] ids, @RequestParam(value="counts[]") Integer[] counts)
+    {
+        User user = userService.findByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+
+        for (int i = 0; i < ids.length; i++) {
+            BoughtProducts boughtProducts = new BoughtProducts();
+            Product product = productService.findById(ids[i]);
+            boughtProducts.setUser(user);
+            boughtProducts.setProduct(product);
+            boughtProducts.setCount(counts[i]);
+            boughtProductsService.addBoughtProduct(boughtProducts);
+        }
+
+
+        return "redirect:/shoppingcart";
     }
 
 }
