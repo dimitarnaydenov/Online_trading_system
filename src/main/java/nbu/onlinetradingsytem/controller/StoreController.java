@@ -48,6 +48,20 @@ public class StoreController {
         model.addAttribute("suppliers",supplierService.findAll());
         return "suppliers";
     }
+    
+    @GetMapping("/suppliers/new")
+    public String CreateSupplier(Model model) {
+        Supplier supplier = new Supplier();
+        model.addAttribute("supplier", supplier);
+        return "suppliers";
+    }
+
+    @PostMapping("/suppliers")
+    public String saveSupplier(@ModelAttribute("supplier") Supplier supplier) {
+        supplierService.saveSupplier(supplier);
+        return "redirect:/suppliers";
+    }
+
 
     @GetMapping("/addProduct")
     public String getAddProductPage()
@@ -73,6 +87,19 @@ public class StoreController {
     {
         productService.updateProduct(product.getId(),product);
         return "";
+    }
+    
+    @GetMapping("/products/new")
+    public String CreateProduct(Model model) {
+        Product product = new Product();
+        model.addAttribute("product", product);
+        return "products";
+    }
+
+    @PostMapping("/products")
+    public String saveProduct(@ModelAttribute("product") Product product) {
+        productService.saveProduct(product);
+        return "redirect:/products";
     }
 
     @GetMapping("/deleteProduct")
