@@ -19,7 +19,7 @@ public class User {
     
     private String password;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne()
     private Role role;
 
     public Integer getId() {

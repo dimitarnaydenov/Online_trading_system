@@ -5,6 +5,7 @@ import nbu.onlinetradingsytem.model.Role;
 import nbu.onlinetradingsytem.model.User;
 import nbu.onlinetradingsytem.services.ProductService;
 import nbu.onlinetradingsytem.services.RoleService;
+import nbu.onlinetradingsytem.services.StoreService;
 import nbu.onlinetradingsytem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,20 +20,24 @@ public class HomeController {
     UserService userService;
     ProductService productService;
     RoleService roleService;
+    StoreService storeService;
 
     @Autowired
-    public HomeController(UserService userService, ProductService productService, RoleService roleService)
+    public HomeController(UserService userService, ProductService productService, RoleService roleService, StoreService storeService)
     {
         this.userService = userService;
         this.productService = productService;
         this.roleService = roleService;
+        this.storeService = storeService;
     }
 
     @GetMapping("/")
     public String showHome(Model model) {
 
+
         List<Product> products = productService.findAll();
         model.addAttribute("products", products);
+        model.addAttribute("store", storeService.findAll().get(0));
         return "index";
     }
 
@@ -75,39 +80,33 @@ public class HomeController {
         return "users";
     }
 
-    @GetMapping("/setRole")
-    public String setRole(@RequestParam String id, Model model) {
+    @GetMapping("/editUser")
+    public String editUser(@RequestParam String id, Model model) {
 
         User user = userService.findById(Integer.parseInt(id));
         model.addAttribute("user", user);
-        return "setRole";
+        return "updateUser";
     }
 
-    @PostMapping("/setRole")
-    public String editContact(@ModelAttribute Role role, @RequestParam String id) {
-        User user = userService.findById(Integer.parseInt(id));
-        user.setRole(roleService.findByName(role.getName()));
+    @PostMapping("/editUser")
+    public String editContact(@ModelAttribute User user, @RequestParam("roleName") String roleName, @RequestParam String id) {
+        user.setRole(roleService.findByName(roleName));
         userService.updateUser(Integer.parseInt(id),user);
         return "redirect:/users";
     }
 
-    @GetMapping("/deleteUser/{id}")
-    public String deleteUser(@PathVariable("id") int id) {
-        userService.removeUser(id);
-        return "redirect:/usersPage";
+    @GetMapping("/deleteUser")
+    public String deleteUser(@RequestParam String id) {
+        userService.removeUser(Integer.parseInt(id));
+        return "redirect:/users";
     }
-    
-       @GetMapping("/users/new")
+
+    @GetMapping("/users/new")
     public String CreateUser(Model model) {
         User user = new User();
         model.addAttribute("user", user);
         return "users";
     }
 
-        @PostMapping("/users")
-        public String saveUser(@ModelAttribute("user") User user) {
-            userService.saveUser(user);
-            return "redirect:/users";
-        }
 
 }

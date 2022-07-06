@@ -2,11 +2,11 @@ h1{
     margin-bottom: 1.5rem;
 }
 
-.users-table-div{
+.table-div{
     padding: 60px 0px;
 }
 
-.users-title{
+.title{
     margin: 20px 0px;
     text-align: center;
 }
@@ -17,7 +17,14 @@ h1{
 
 }
 
-table, tr, th, td {
-  border: 1px solid black;
+.card-img, .card-img-top {
+    max-height: 250px;
 }
+
+table, tr, th, td {
+    border: 1px solid black;
+}
+
+
+
 

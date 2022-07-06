@@ -17,7 +17,7 @@
 <header class="bg-dark py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Hardware Shop</h1>
+            <h1 class="display-4 fw-bolder" th:text="${store.getName()}"> Shop</h1>
         </div>
     </div>
 </header>
@@ -37,7 +37,7 @@
                             <!-- Product name-->
                             <h5 class="fw-bolder" id="name" th:value="${product.getName()}" th:text="${product.getName()}"></h5>
                             <!-- Product price-->
-                            <p id="price" th:value="${product.getPrice()}" th:text="${product.getPrice()}"> lv.</p>
+                            <p id="price" th:value="${product.getPrice()}" th:text="${#numbers.formatDecimal(product.getPrice(),0,2)} + ' lv.'">
                         </div>
                     </div>
 

@@ -93,9 +93,6 @@ function buy()
 
     }
 
-    console.log(ids)
-    console.log(counts)
-
     $.ajax({
         type : "POST",
         url : "/buy",

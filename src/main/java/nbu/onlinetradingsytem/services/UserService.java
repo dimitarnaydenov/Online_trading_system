@@ -61,11 +61,6 @@ public class UserService implements UserDetailsService {
     public User auth(String username,String password){
         return userRepository.findByUsernameAndPassword(username, password).orElse(null);
     }
-    
-    @Transactional
-    public User saveUser(User user) {
-        return userRepository.save(user);
-    }
 
     @Transactional
     public List<User> findAll() {
@@ -82,6 +77,18 @@ public class UserService implements UserDetailsService {
     public void updateUser(int id, User userDTO) {
 
         User user = userRepository.findById(id);
+
+        if (userDTO.getFirstName() != null) {
+            user.setFirstName(userDTO.getFirstName());
+        }
+
+        if (userDTO.getLastName() != null) {
+            user.setLastName(userDTO.getLastName());
+        }
+
+        if (userDTO.getUsername() != null) {
+            user.setUsername(userDTO.getUsername());
+        }
 
         if (userDTO.getRole() != null) {
             user.setRole(userDTO.getRole());
