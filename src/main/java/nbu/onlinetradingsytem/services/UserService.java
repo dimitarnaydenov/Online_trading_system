@@ -61,6 +61,11 @@ public class UserService implements UserDetailsService {
     public User auth(String username,String password){
         return userRepository.findByUsernameAndPassword(username, password).orElse(null);
     }
+    
+    @Transactional
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
 
     @Transactional
     public List<User> findAll() {
