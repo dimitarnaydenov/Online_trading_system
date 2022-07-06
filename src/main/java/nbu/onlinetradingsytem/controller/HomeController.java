@@ -96,5 +96,18 @@ public class HomeController {
         userService.removeUser(id);
         return "redirect:/usersPage";
     }
+    
+       @GetMapping("/users/new")
+    public String CreateUser(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+        return "users";
+    }
+
+        @PostMapping("/users")
+        public String saveUser(@ModelAttribute("user") User user) {
+            userService.saveUser(user);
+            return "redirect:/users";
+        }
 
 }
