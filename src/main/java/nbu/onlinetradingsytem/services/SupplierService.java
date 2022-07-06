@@ -20,6 +20,11 @@ public class SupplierService {
         supplierRepository.save(supplier);
 
     }
+    
+     @Transactional
+    public Supplier saveSupplier(Supplier supplier) {
+        return supplierRepository.save(supplier);
+    }
 
     @Transactional
     public void updateSupplier(int id, Supplier supplierDTO) {
