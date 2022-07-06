@@ -30,6 +30,11 @@ public class ProductService {
         productRepository.save(product);
 
     }
+    
+    @Transactional
+    public Product saveProduct(Product product) {
+        return productRepository.save(product);
+    }
 
     @Transactional
     public void updateProduct(int id, Product productDTO) {
