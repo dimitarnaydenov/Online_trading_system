@@ -1,5 +1,7 @@
 package nbu.onlinetradingsytem.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -20,11 +22,19 @@ public class Product {
     @Column(nullable = false)
     private String imageURL;
 
+    @Column(nullable = false)
+    private Category category;
+
     @Column()
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDiscount;
 
     @Column()
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDiscount;
+
+    @Column()
+    private double discount = 0;
 
     @ManyToOne(cascade=CascadeType.ALL)
     private Supplier supplier;
@@ -49,7 +59,7 @@ public class Product {
         if (startDiscount != null && endDiscount!=null){
             if (new Date().after(startDiscount) && new Date().before(endDiscount)) // Problem?
             {
-
+                return price - price*discount/100;
             }
         }
 
@@ -68,6 +78,14 @@ public class Product {
         this.imageURL = imageURL;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     public Date getStartDiscount() {
         return startDiscount;
     }
@@ -84,6 +102,14 @@ public class Product {
         this.endDiscount = endDiscount;
     }
 
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = (discount.isEmpty() ? 0 : Double.parseDouble(discount));
+    }
+
     public Supplier getSupplier() {
         return supplier;
     }
@@ -94,5 +120,9 @@ public class Product {
 
     public Product() {
 
+    }
+
+    public enum Category {
+        HARDWARE, CLOTHING, FURNITURE, OTHER
     }
 }
