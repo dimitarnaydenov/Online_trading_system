@@ -94,8 +94,20 @@ public class StoreController {
     }
 
     @GetMapping("/editSupplier")
+    public String editSupplier(@RequestParam String id, Model model) {
+        model.addAttribute("supplier",supplierService.findById(Integer.parseInt(id)));
+        return "updateSupplier";
+    }
+
+    @PostMapping("/editSupplier")
     public String editSupplier(@ModelAttribute Supplier supplier, @RequestParam String id) {
         supplierService.updateSupplier(Integer.parseInt(id), supplier);
+        return "redirect:/suppliers";
+    }
+
+    @GetMapping("/deleteSupplier")
+    public String deleteSupplier(@RequestParam String id) {
+        supplierService.deleteSupplier(supplierService.findById(Integer.parseInt(id)));
         return "redirect:/suppliers";
     }
 

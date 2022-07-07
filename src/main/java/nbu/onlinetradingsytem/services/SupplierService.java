@@ -15,6 +15,13 @@ public class SupplierService {
     private SupplierRepository supplierRepository;
 
     @Transactional
+    public Supplier findById(int id) {
+
+       return supplierRepository.findById(id);
+
+    }
+
+    @Transactional
     public void addSupplier(Supplier supplier) {
 
         supplierRepository.save(supplier);
