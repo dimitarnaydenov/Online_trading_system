@@ -23,6 +23,7 @@ public class Product {
     private String imageURL;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Category category;
 
     @Column()
@@ -36,7 +37,7 @@ public class Product {
     @Column()
     private double discount = 0;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne()
     private Supplier supplier;
 
     public Integer getId() {

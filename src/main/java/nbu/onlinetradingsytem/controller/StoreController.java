@@ -1,12 +1,17 @@
 package nbu.onlinetradingsytem.controller;
 
 import nbu.onlinetradingsytem.model.*;
+import nbu.onlinetradingsytem.model.help.BoughtProduct;
 import nbu.onlinetradingsytem.services.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class StoreController {
@@ -132,6 +137,24 @@ public class StoreController {
 
 
         return "redirect:/shoppingcart";
+    }
+
+    @GetMapping("/statistics")
+    public String statistics(Model model)
+    {
+        return "statistics";
+    }
+
+    @GetMapping("/soldProducts")
+    public ResponseEntity<List<BoughtProduct>> getData() {
+        List<BoughtProduct> results = boughtProductsService.getBoughtProductsByCount();
+        return new ResponseEntity<List<BoughtProduct>>(results, HttpStatus.OK);
+    }
+
+    @GetMapping("/soldProductsByCategory")
+    public ResponseEntity<List<BoughtProduct>> getData2() {
+        List<BoughtProduct> results = boughtProductsService.getBoughtProductsByCategory();
+        return new ResponseEntity<List<BoughtProduct>>(results, HttpStatus.OK);
     }
 
 }

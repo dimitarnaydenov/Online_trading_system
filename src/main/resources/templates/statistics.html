@@ -1,33 +1,120 @@
 <!DOCTYPE html>
 <html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="../bootstrap.min.css">
+<link rel="stylesheet" href="../style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
 <body>
 
-<canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+<header th:insert="navigation :: header"></header>
+
+<div class="container table-div">
+
+    <h2 class="title">Sold Products</h2>
+
+<canvas id="myChart" style="margin: 0 auto; max-width: 720px; max-height: 360px;"></canvas>
+
+    <h2 class="title">Sold Products By Category</h2>
+
+    <canvas id="myChart2" style="margin: 0 auto; max-width: 720px; max-height: 360px;"></canvas>
 
 <script>
-var xValues = ["Lenovo", "Nokia", "Samsung", "Apple"];
-var yValues = [, , , , ];
+var xValues = [];
+var yValues = [];
 var barColors = ["red", "green","blue","orange","brown"];
 
-new Chart("myChart", {
-  type: "bar",
-  data: {
-    labels: xValues,
-    datasets: [{
-      backgroundColor: barColors,
-      data: yValues
-    }]
-  },
-  options: {
-    legend: {display: false},
-    title: {
-      display: true,
-      text: "Statistics"
-    }
-  }
-});
-</script>
+$.ajax({
+    type : "GET",
+    url : "/soldProducts",
 
+    success : function(response) {
+        for (let r of response)
+        {
+            xValues.push(r['name']);
+           yValues.push(r['count']);
+            new Chart("myChart", {
+                type: "bar",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        backgroundColor: barColors,
+                        data: yValues
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                            }
+                        }]
+                    },
+                    legend: {display: false},
+                    title: {
+                        display: true,
+                        text: "Statistics"
+                    }
+
+                }
+            });
+        }
+    },
+    error : function(e) {
+        alert('Error: ' + e);
+    }
+});
+
+let xValues2 = [];
+let yValues2 = [];
+
+$.ajax({
+    type : "GET",
+    url : "/soldProductsByCategory",
+
+    success : function(response) {
+        for (let r of response)
+        {
+            xValues2.push(r['name']);
+            yValues2.push(r['count']);
+            new Chart("myChart2", {
+                type: "bar",
+                data: {
+                    labels: xValues2,
+                    datasets: [{
+                        backgroundColor: barColors,
+                        data: yValues2
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                            }
+                        }]
+                    },
+                    legend: {display: false},
+                    title: {
+                        display: true,
+                        text: "Statistics"
+                    }
+
+                }
+            });
+        }
+    },
+    error : function(e) {
+        alert('Error: ' + e);
+    }
+});
+
+
+</script>
+</div>
 </body>
 </html>
