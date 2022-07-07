@@ -20,19 +20,18 @@ public class SupplierService {
         supplierRepository.save(supplier);
 
     }
-    
-     @Transactional
-    public Supplier saveSupplier(Supplier supplier) {
-        return supplierRepository.save(supplier);
-    }
 
     @Transactional
     public void updateSupplier(int id, Supplier supplierDTO) {
 
         Supplier supplier = supplierRepository.findById(id);
 
-        if (supplierDTO.getName() != null ) {
-            supplier.setName(supplierDTO.getName());
+        if (supplierDTO.getFirstName() != null ) {
+            supplier.setFirstName(supplierDTO.getFirstName());
+        }
+
+        if (supplierDTO.getLastName() != null ) {
+            supplier.setLastName(supplierDTO.getLastName());
         }
 
         supplierRepository.save(supplier);

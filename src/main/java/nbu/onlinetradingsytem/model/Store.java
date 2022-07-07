@@ -1,14 +1,13 @@
 package nbu.onlinetradingsytem.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
 public class Store {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;
@@ -37,5 +36,9 @@ public class Store {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Store() {
+
     }
 }

@@ -8,8 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-
 @Controller
 public class StoreController {
 
@@ -42,26 +40,19 @@ public class StoreController {
         return "store";
     }
 
+    @PostMapping("/store")
+    public String editStore(@ModelAttribute Store store)
+    {
+        storeService.editStore(store);
+        return "redirect:/store";
+    }
+
     @GetMapping("/suppliers")
     public String getSuppliers(Model model)
     {
         model.addAttribute("suppliers",supplierService.findAll());
         return "suppliers";
     }
-    
-    @GetMapping("/suppliers/new")
-    public String CreateSupplier(Model model) {
-        Supplier supplier = new Supplier();
-        model.addAttribute("supplier", supplier);
-        return "suppliers";
-    }
-
-    @PostMapping("/suppliers")
-    public String saveSupplier(@ModelAttribute("supplier") Supplier supplier) {
-        supplierService.saveSupplier(supplier);
-        return "redirect:/suppliers";
-    }
-
 
     @GetMapping("/addProduct")
     public String getAddProductPage()
@@ -88,24 +79,24 @@ public class StoreController {
         productService.updateProduct(product.getId(),product);
         return "";
     }
-    
-    @GetMapping("/products/new")
-    public String CreateProduct(Model model) {
-        Product product = new Product();
-        model.addAttribute("product", product);
-        return "products";
-    }
-
-    @PostMapping("/products")
-    public String saveProduct(@ModelAttribute("product") Product product) {
-        productService.saveProduct(product);
-        return "redirect:/products";
-    }
 
     @GetMapping("/deleteProduct")
     public String deleteProduct(@RequestParam String id) {
         productService.deleteProduct(productService.findById(Integer.parseInt(id)));
         return "redirect:/";
+    }
+
+    @PostMapping("/addSupplier")
+    public String addSupplier(@ModelAttribute Supplier supplier)
+    {
+        supplierService.addSupplier(supplier);
+        return "redirect:/suppliers";
+    }
+
+    @GetMapping("/editSupplier")
+    public String editSupplier(@ModelAttribute Supplier supplier, @RequestParam String id) {
+        supplierService.updateSupplier(Integer.parseInt(id), supplier);
+        return "redirect:/suppliers";
     }
 
     @GetMapping("/cart")
