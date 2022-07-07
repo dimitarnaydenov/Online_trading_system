@@ -24,11 +24,10 @@
 <!-- Section-->
 <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-
+        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
             <div class="col mb-5" th:each="product : ${products}">
-                <div class="card h-100">
+                <div class="card h-100 product-card">
                     <!-- Product image-->
                     <img class="card-img-top" id="imageURL" th:value="${product.getImageURL()}" th:src="${product.getImageURL()}" alt="..." />
                     <!-- Product details-->
@@ -38,6 +37,7 @@
                             <h5 class="fw-bolder" id="name" th:value="${product.getName()}" th:text="${product.getName()}"></h5>
                             <!-- Product price-->
                             <p id="price" th:value="${product.getPrice()}" th:text="${#numbers.formatDecimal(product.getPrice(),0,2)} + ' lv.'">
+                            <p class="text-success" th:if=" ${product.getDiscount()}>0" th:text="'With a ' + ${#numbers.formatDecimal(product.getDiscount(),0,0)} + '% discount until ' + ${#dates.format(product.getEndDiscount(),'dd-MM-yyyy')}"></p>
                         </div>
                     </div>
 

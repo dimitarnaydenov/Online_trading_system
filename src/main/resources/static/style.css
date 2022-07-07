@@ -21,6 +21,10 @@ h1{
     max-height: 250px;
 }
 
+.product-card {
+    max-width: 370px;
+}
+
 table, tr, th, td {
     border: 1px solid black;
 }

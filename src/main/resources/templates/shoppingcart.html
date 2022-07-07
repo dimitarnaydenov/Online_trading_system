@@ -16,46 +16,16 @@
 
 
 </head>
-     <!-- Navbar Start -->
-     <div class="container-fluid p-0">
-        <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-lg-5">
-            <a href="index.html" class="navbar-brand ml-lg-3">
-                
-            </a>
-        
 
-                         
-            <a href = "index.html">
-                <button type="submit">Logout</button>
-                
-            </a>
-                <a href = "user.html">
-                    <button type ="submit" >Return</button>
-                </a>          
 
-                          </select>
-                        </form>
-                      </div>
-                    </div>
-                </div>
-
-            </div>
-        </nav>
-    </div>
-<style>
-    
-table, th, td {
-  border:1px solid black;
-}
-</style>
 <body onload="loadProduct()">
 
 
 <header th:insert="navigation :: header"></header>
 
-<div class="container users-table-div ">
+<div class="container table-div ">
 
-    <h2 class="users-title">Shopping cart</h2>
+    <h2 class="title">Shopping cart</h2>
 
     <table class="table table-hover table-light">
         <thead class="bg-light">
@@ -75,7 +45,7 @@ table, th, td {
     </table>
 
 
-    <p>Price: <div id="price">0</div> lv.</p>
+    <p class="text-right" id="price"></p>
 
     <div class="text-center mt-3"><a class="btn btn-outline-dark mt-auto btn-success text-white" onclick="buy()" sec:authorize="isAuthenticated()" href="#">Buy</a></div>
 </div>

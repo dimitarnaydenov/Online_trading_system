@@ -43,7 +43,6 @@ public class HomeController {
 
     @GetMapping("/register")
     public String getRegisterPage(Model model) {
-        System.out.println("register get");
         model.addAttribute("registerRequest", new User());
         return "register";
     }

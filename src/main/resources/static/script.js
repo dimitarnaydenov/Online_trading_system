@@ -4,8 +4,8 @@ function addProduct(event){
     let name = event.parentNode.parentNode.parentNode.childNodes[7].childNodes[1].childNodes[3].getAttribute('value');
     let price = event.parentNode.parentNode.parentNode.childNodes[7].childNodes[1].childNodes[7].getAttribute('value');
     let products = [];
-    if(localStorage.getItem('products')){
-        products = JSON.parse(localStorage.getItem('products'));
+    if(sessionStorage.getItem('products')){
+        products = JSON.parse(sessionStorage.getItem('products'));
     }
 
     if (products[id] !== undefined)
@@ -18,15 +18,15 @@ function addProduct(event){
 
     }
 
-    localStorage.setItem('products', JSON.stringify(products));
+    sessionStorage.setItem('products', JSON.stringify(products));
 }
 
 function loadProduct()
 {
 
     let products = [];
-    if(localStorage.getItem('products')){
-        products = JSON.parse(localStorage.getItem('products'));
+    if(sessionStorage.getItem('products')){
+        products = JSON.parse(sessionStorage.getItem('products'));
     }
     let price = 0;
     let count = 1;
@@ -44,15 +44,15 @@ function loadProduct()
         }
 
     }
-    document.getElementById('price').textContent = price;
+    document.getElementById('price').textContent = "Price: " + price + " lv.";
 }
 
 function removeElement(element, id, price,count)
 {
 
     let products = [];
-    if(localStorage.getItem('products')){
-        products = JSON.parse(localStorage.getItem('products'));
+    if(sessionStorage.getItem('products')){
+        products = JSON.parse(sessionStorage.getItem('products'));
     }
 
     for (let element of products) {
@@ -66,7 +66,7 @@ function removeElement(element, id, price,count)
         }
 
     }
-    localStorage.setItem('products', JSON.stringify(products));
+    sessionStorage.setItem('products', JSON.stringify(products));
 
     document.getElementById('price').textContent = parseInt(document.getElementById('price').textContent) - parseInt(price)*parseInt(count);
     element.parentNode.parentNode.remove();
@@ -77,8 +77,8 @@ function removeElement(element, id, price,count)
 function buy()
 {
     let products = [];
-    if(localStorage.getItem('products')){
-        products = JSON.parse(localStorage.getItem('products'));
+    if(sessionStorage.getItem('products')){
+        products = JSON.parse(sessionStorage.getItem('products'));
     }
 
     let ids = [];
@@ -101,7 +101,7 @@ function buy()
             counts: counts
         },
         success : function(response) {
-            localStorage.setItem('products', []);
+            sessionStorage.setItem('products', []);
         },
         error : function(e) {
             alert('Error: ' + e);

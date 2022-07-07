@@ -23,7 +23,7 @@
 			<div class ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
 				<h1 class = "text-center"> Update Product </h1>
 				<div class = "card-body">
-					<form th:action="@{/products/{id} (id=${product.id})}" th:object = "${product}" method="POST">
+					<form th:action="@{/editProduct(id=${product.getId()})}" method="POST">
 						<div class ="form-group">
 							<label> Product Name </label>
 							<input
