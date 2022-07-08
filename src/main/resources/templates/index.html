@@ -43,10 +43,10 @@
                     </div>
 
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" sec:authorize="isAuthenticated()" onclick="addProduct(this)" th:id="${product.getId()}">Add to cart</a></div>
+                        <div class="text-center" sec:authorize="hasAuthority('USER')"><a class="btn btn-outline-dark mt-auto"  onclick="addProduct(this)" th:id="${product.getId()}">Add to cart</a></div>
 
-                        <div class="text-center mt-3"><a class="btn btn-outline-dark mt-auto btn-warning" sec:authorize="hasAuthority('ADMIN') OR hasAuthority('MODERATOR')" th:href="@{'/editProduct?id='+${product.getId()}}">Edit</a></div>
-                        <div class="text-center mt-3"><a class="btn btn-outline-dark mt-auto btn-danger text-white" sec:authorize="hasAuthority('ADMIN') OR hasAuthority('MODERATOR')" th:href="@{'/deleteProduct?id='+${product.getId()}}">Remove</a></div>
+                        <div class="text-center mt-3" sec:authorize="hasAuthority('ADMIN') OR hasAuthority('MODERATOR')"><a class="btn btn-outline-dark mt-auto btn-warning"  th:href="@{'/editProduct?id='+${product.getId()}}">Edit</a></div>
+                        <div class="text-center mt-3" sec:authorize="hasAuthority('ADMIN') OR hasAuthority('MODERATOR')"><a class="btn btn-outline-dark mt-auto btn-danger text-white"  th:href="@{'/deleteProduct?id='+${product.getId()}}">Remove</a></div>
 
                     </div>
 

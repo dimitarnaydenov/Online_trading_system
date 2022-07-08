@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class HomeController {
@@ -48,13 +49,19 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute User user) {
+    public String register(@ModelAttribute User user, Model model) {
         User userToRegister = userService.registerUser(user.getFirstName(), user.getLastName(), user.getUsername(), user.getPassword());
-        return /*userToRegister == null ? "error_page" :*/ "redirect:/login";
+        if (userToRegister == null)
+        {
+            model.addAttribute("error",true);
+            return "/register";
+        }
+        return "redirect:/login";
     }
 
     @GetMapping("/login")
-    public String getLoginPage(Model model) {
+    public String getLoginPage(Model model, @RequestParam Optional<String> id) {
+        if (id.isPresent() && id.get().equals("error")) model.addAttribute("error",true);
         model.addAttribute("loginRequest");
         return "login";
     }

@@ -24,6 +24,8 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
                     <th scope="col">Role</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
@@ -34,6 +36,8 @@
             <tr>
                 <th scope="row" th:text="${userStat.index+1}">3</th>
                 <td th:text="${user.getUsername()}">Peter</td>
+                <td th:text="${user.getFirstName()}">Peter</td>
+                <td th:text="${user.getLastName()}">Peter</td>
                 <td th:text="${user.getRole().getName()}">user</td>
                 <td>
                     <a class="btn btn-warning" sec:authorize="hasAuthority('ADMIN')" th:href="@{'/editUser?id='+${user.getId()}}">Edit User</a>
