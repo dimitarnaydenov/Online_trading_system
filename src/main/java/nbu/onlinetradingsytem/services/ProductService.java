@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,6 +28,14 @@ public class ProductService {
     @Transactional
     public void addProduct(Product product){
 
+        if ((product.getStartDiscount() != null && product.getEndDiscount() == null))
+        {
+         product.setEndDiscount(new Date());
+        }
+        if ((product.getStartDiscount() == null && product.getEndDiscount() != null))
+        {
+            product.setStartDiscount(new Date());
+        }
         productRepository.save(product);
 
     }
@@ -66,6 +75,15 @@ public class ProductService {
 
         if (productDTO.getDiscount() != 0.) {
             product.setDiscount(String.valueOf(productDTO.getDiscount()));
+        }
+
+        if ((product.getStartDiscount() != null && product.getEndDiscount() == null))
+        {
+            product.setEndDiscount(new Date());
+        }
+        if ((product.getStartDiscount() == null && product.getEndDiscount() != null))
+        {
+            product.setStartDiscount(new Date());
         }
 
         productRepository.save(product);
