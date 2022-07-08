@@ -13,6 +13,8 @@
 <header th:insert="navigation :: header"></header>
 <div class="container table-div">
     <h1 class="title">Login</h1>
+    <h4 class="title text-danger" th:if="${error == true}">Invalid username or password!</h4>
+
     <div class="card h-100">
         <div class="card-body">
             <form action="/login" method="POST">
