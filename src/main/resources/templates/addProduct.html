@@ -14,14 +14,13 @@
 
 <header th:insert="navigation :: header"></header>
 
-<div class="container contact-page-div">
-    <h1 class="text-center">Add New Product</h1>
+<div class="container table-div">
+    <h1 class="title">Add New Product</h1>
     <div class="col-md-12 col-sm-12 col-12">
         <div class="card h-100">
             <div class="card-body">
                 <form action="/addProduct" method="POST">
                     <div class="row gutters" id="fields">
-
                         <div class="col-md-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label for="name">
@@ -45,6 +44,28 @@
                                     <h6 class="text-primary">Image URL</h6>
                                 </label>
                                 <input type="text" class="form-control" name="imageURL" id="imageURL" placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="category">
+                                    <h6 class="text-primary">Category</h6>
+                                </label>
+                                <select class="custom-select" name="category" id="category">
+                                    <option value="HARDWARE" class="">Hardware</option>
+                                    <option value="MODERATOR" class="" >Moderator</option>
+                                    <option value="OTHER" class="">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="supplierId">
+                                    <h6 class="text-primary">Supplier</h6>
+                                </label>
+                                <select class="custom-select" name="supplierId" id="supplierId">
+                                    <option th:each="supplier : ${suppliers}" th:value="${supplier.getId()}" th:text="${supplier.getFirstName() + ' '+supplier.getLastName()}"></option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-6 col-12">
@@ -73,32 +94,6 @@
                                 <input type="number" class="form-control" name="discount" id="discount" placeholder="" minlength="1" maxlength="125">
                             </div>
                         </div>
-<!--                        <div class="col-md-6 col-sm-6 col-12">-->
-<!--                            <div class="form-group">-->
-<!--                                <label for="supplier">-->
-<!--                                    <h6 class="text-primary">Supplier</h6>-->
-<!--                                </label>-->
-<!--                                <input type="text" class="form-control" name="supplier" id="supplier" placeholder="" minlength="1" maxlength="45" >-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-md-6 col-sm-6 col-12">-->
-<!--                            <div class="form-group">-->
-<!--                                <label for="label">-->
-<!--                                    <h6 class="text-primary">Label</h6>-->
-<!--                                </label>-->
-<!--                                <select class="custom-select" name="label" id="label">-->
-<!--                                    <option value="WHITE" class="">white</option>-->
-<!--                                    <option value="BLUE" class="bg-primary text-white">blue</option>-->
-<!--                                    <option value="RED" class="bg-danger text-white">red</option>-->
-<!--                                    <option value="YELLOW" class="bg-warning text-dark">yellow</option>-->
-<!--                                    <option value="GREEN" class="bg-success text-white">green</option>-->
-<!--                                    <option value="GREY" class="bg-secondary text-white">grey</option>-->
-<!--                                    <option value="BLACK" class="bg-dark text-white">black</option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </div>-->
-
-
                     </div>
                     <div>
                         <input class="btn btn-primary btn-addContact float-right" type="submit" title="Add Product">

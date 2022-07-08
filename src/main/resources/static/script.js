@@ -1,5 +1,5 @@
 function addProduct(event){
-    let id = event.getAttribute("id");
+    let id = parseInt(event.getAttribute("id"));
     let imageURL = event.parentNode.parentNode.parentNode.childNodes[3].src;
     let name = event.parentNode.parentNode.parentNode.childNodes[7].childNodes[1].childNodes[3].getAttribute('value');
     let price = event.parentNode.parentNode.parentNode.childNodes[7].childNodes[1].childNodes[7].getAttribute('value');
@@ -8,7 +8,7 @@ function addProduct(event){
         products = JSON.parse(sessionStorage.getItem('products'));
     }
 
-    if (products[id] !== undefined)
+    if (typeof products[id] !== 'undefined' && products[id] !== null)
     {
         products[id].count++;
     }
@@ -21,30 +21,61 @@ function addProduct(event){
     sessionStorage.setItem('products', JSON.stringify(products));
 }
 
-function loadProduct()
+async function loadProduct()
 {
 
     let products = [];
     if(sessionStorage.getItem('products')){
         products = JSON.parse(sessionStorage.getItem('products'));
     }
-    let price = 0;
+    let allPrice = 0;
     let count = 1;
+
+
     for (let element of products) {
-        if (element !== null){
+        if (element != null)
+        {
+            let price = 0;
+
+            price = await fun(element, count);
+
+            if (price === 0.0)
+            {
+
+                const index = products.indexOf(element);
+                products[index] = null;
+                sessionStorage.setItem('products', JSON.stringify(products));
+                continue
+            }
+
             $("#products").append(`<tr>\n" +
             "                <th scope=\"row\" >${count++}</th>\n" +
             "                <td>${element["name"]}</td>\n" +
-            "                <td>${element["price"]}</td>\n" +
+            "                <td>${price.toFixed(2)}</td>\n" +
             "                  <td>${element["count"]}</td>\n" +
-            "                <td><a class=\"btn btn-danger\" onclick="removeElement(this,${element["productId"]}, ${element["price"]},${element["count"]})" href=\"#\">Delete</a></td>\n" +
+            "                <td><a class=\"btn btn-danger\" onclick="removeElement(this,${element["productId"]}, ${price},${element["count"]})" href=\"#\">Delete</a></td>\n" +
             "            </tr>`);
 
-            price+= (parseInt(element["price"]) * parseInt(element["count"]));
+            allPrice+= (price * parseInt(element["count"]));
         }
-
     }
-    document.getElementById('price').textContent = "Price: " + price + " lv.";
+
+    document.getElementById('price').textContent = allPrice;
+}
+
+async function fun(item) {
+        return await $.ajax({
+            type : "GET",
+            url : `getPrice?id=${item['productId']}`,
+            success : function(response) {
+
+                return response;
+            },
+            error : function(e) {
+                alert('Error: ' + e);
+            }
+        });
+
 }
 
 function removeElement(element, id, price,count)
@@ -58,17 +89,20 @@ function removeElement(element, id, price,count)
     for (let element of products) {
         if (element !== null && parseInt(element["productId"]) === parseInt(id)){
 
+
             const index = products.indexOf(element);
-            if (index > -1) { // only splice array when item is found
-                products.splice(index, 1); // 2nd parameter means remove one item only
-            }
+            products[index] = null;
+            // if (index > -1) { // only splice array when item is found
+            //     products.splice(index, 1); // 2nd parameter means remove one item only
+            // }
 
         }
 
     }
     sessionStorage.setItem('products', JSON.stringify(products));
 
-    document.getElementById('price').textContent = parseInt(document.getElementById('price').textContent) - parseInt(price)*parseInt(count);
+
+    document.getElementById('price').textContent = parseFloat(document.getElementById('price').textContent) - parseFloat(price)*parseFloat(count);
     element.parentNode.parentNode.remove();
 
 
@@ -102,6 +136,7 @@ function buy()
         },
         success : function(response) {
             sessionStorage.setItem('products', []);
+            location.href='/cart?id=success';
         },
         error : function(e) {
             alert('Error: ' + e);

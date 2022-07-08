@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,9 +23,13 @@
 
 <header th:insert="navigation :: header"></header>
 
-<div class="container table-div ">
+<div class="container table-div">
+
+    <h3 class="title text-success" th:if="${success == true}">The order is successful!</h3>
 
     <h2 class="title">Shopping cart</h2>
+
+
 
     <table class="table table-hover table-light">
         <thead class="bg-light">
@@ -45,7 +49,7 @@
     </table>
 
 
-    <p class="text-right" id="price"></p>
+    <p class="text-right" >Price: <span id="price">0</span> lv.</p>
 
     <div class="text-center mt-3"><a class="btn btn-outline-dark mt-auto btn-success text-white" onclick="buy()" sec:authorize="isAuthenticated()" href="#">Buy</a></div>
 </div>

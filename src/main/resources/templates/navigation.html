@@ -45,7 +45,7 @@
 
             <form id="logoutForm" method="post" action="/logout" sec:authorize="isAuthenticated()">
             <li class="nav-item">
-                <a class="nav-link" href="javascript:$('#logoutForm').submit();" value="Logout" >Logout</a>
+                <a class="nav-link" href="javascript:sessionStorage.clear(); $('#logoutForm').submit();" value="Logout" >Logout</a>
             </li>
 
             </form>

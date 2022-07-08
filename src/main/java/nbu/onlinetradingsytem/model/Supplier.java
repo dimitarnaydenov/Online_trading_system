@@ -16,7 +16,8 @@ public class Supplier {
     @Column(nullable = false, length = 50)
     private String lastName;
 
-    @OneToMany(mappedBy = "supplier")
+    @OneToMany(mappedBy = "supplier",
+            cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST })
     private List<Product> products;
 
     public Integer getId() {
@@ -49,6 +50,11 @@ public class Supplier {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    @PreRemove
+    private void preRemove() {
+        products.forEach( p -> p.setSupplier(null));
     }
 
     public Supplier() {

@@ -26,7 +26,8 @@
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
-            <div class="col mb-5" th:each="product : ${products}">
+            <th:block th:each="product : ${products}">
+            <div class="col mb-5" th:if="${product.isDeleted() == false}">
                 <div class="card h-100 product-card">
                     <!-- Product image-->
                     <img class="card-img-top" id="imageURL" th:value="${product.getImageURL()}" th:src="${product.getImageURL()}" alt="..." />
@@ -36,13 +37,13 @@
                             <!-- Product name-->
                             <h5 class="fw-bolder" id="name" th:value="${product.getName()}" th:text="${product.getName()}"></h5>
                             <!-- Product price-->
-                            <p id="price" th:value="${product.getPrice()}" th:text="${#numbers.formatDecimal(product.getPrice(),0,2)} + ' lv.'">
-                            <p class="text-success" th:if=" ${product.getDiscount()}>0" th:text="'With a ' + ${#numbers.formatDecimal(product.getDiscount(),0,0)} + '% discount until ' + ${#dates.format(product.getEndDiscount(),'dd-MM-yyyy')}"></p>
+                            <p id="price" th:value="${product.getFinalPrice()}" th:text="${#numbers.formatDecimal(product.getFinalPrice(),0,2)} + ' lv.'">
+                            <p class="text-success" th:if=" ${product.getDiscount()}>0 and ${product.getEndDiscount().after(#dates.createNow())}" th:text="'With a ' + ${#numbers.formatDecimal(product.getDiscount(),0,0)} + '% discount until ' + ${#dates.format(product.getEndDiscount(),'dd-MM-yyyy')}"></p>
                         </div>
                     </div>
 
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" sec:authorize="isAuthenticated()" onclick="addProduct(this)" th:id="${product.getId()}" href="#">Add to cart</a></div>
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" sec:authorize="isAuthenticated()" onclick="addProduct(this)" th:id="${product.getId()}">Add to cart</a></div>
 
                         <div class="text-center mt-3"><a class="btn btn-outline-dark mt-auto btn-warning" sec:authorize="hasAuthority('ADMIN') OR hasAuthority('MODERATOR')" th:href="@{'/editProduct?id='+${product.getId()}}">Edit</a></div>
                         <div class="text-center mt-3"><a class="btn btn-outline-dark mt-auto btn-danger text-white" sec:authorize="hasAuthority('ADMIN') OR hasAuthority('MODERATOR')" th:href="@{'/deleteProduct?id='+${product.getId()}}">Remove</a></div>
@@ -51,6 +52,7 @@
 
                 </div>
             </div>
+            </th:block>
         </div>
     </div>
 </section>

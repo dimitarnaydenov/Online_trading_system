@@ -13,7 +13,7 @@ public interface BoughtProductsRepository extends JpaRepository<BoughtProducts, 
             nativeQuery = true)
     List<Object[]> getBoughtProductsByCount();
 
-    @Query(value = "SELECT category, count(*) FROM trading_system.bought_products INNER JOIN products ON bought_products.product_id=products.id group by category",
+    @Query(value = "SELECT category, SUM(count) FROM trading_system.bought_products INNER JOIN products ON bought_products.product_id=products.id group by category",
             nativeQuery = true)
     List<Object[]> getBoughtProductsByCategory();
 }

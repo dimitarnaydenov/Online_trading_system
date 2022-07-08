@@ -12,7 +12,7 @@ public class BoughtProducts {
     @JoinColumn(name = "user_id")
     User user;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "product_id")
     Product product;
 
