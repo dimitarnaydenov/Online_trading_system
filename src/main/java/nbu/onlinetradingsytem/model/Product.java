@@ -40,6 +40,9 @@ public class Product {
     @ManyToOne()
     private Supplier supplier;
 
+    @Column()
+    boolean isDeleted = false;
+
     public Integer getId() {
         return id;
     }
@@ -57,8 +60,13 @@ public class Product {
     }
 
     public double getPrice() {
+       return price;
+    }
+
+    public double getFinalPrice()
+    {
         if (startDiscount != null && endDiscount!=null){
-            if (new Date().after(startDiscount) && new Date().before(endDiscount)) // Problem?
+            if (new Date().after(startDiscount) && new Date().before(endDiscount))
             {
                 return price - price*discount/100;
             }
@@ -117,6 +125,14 @@ public class Product {
 
     public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 
     public Product() {

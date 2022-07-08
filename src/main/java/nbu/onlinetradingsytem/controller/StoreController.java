@@ -2,9 +2,11 @@ package nbu.onlinetradingsytem.controller;
 
 import nbu.onlinetradingsytem.model.*;
 import nbu.onlinetradingsytem.model.help.BoughtProduct;
+import nbu.onlinetradingsytem.model.help.CartProduct;
 import nbu.onlinetradingsytem.services.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class StoreController {
@@ -60,29 +63,34 @@ public class StoreController {
     }
 
     @GetMapping("/addProduct")
-    public String getAddProductPage()
+    public String getAddProductPage(Model model)
     {
+        model.addAttribute("suppliers",supplierService.findAll());
         return "addProduct";
     }
 
     @PostMapping("/addProduct")
-    public String addProduct(@ModelAttribute Product product)
+    public String addProduct(@ModelAttribute Product product, @RequestParam String supplierId)
     {
+        product.setSupplier(supplierService.findById(Integer.parseInt(supplierId)));
         productService.addProduct(product);
         return "redirect:/";
     }
 
     @GetMapping("/editProduct")
-    public String getEditProductPage()
+    public String getEditProductPage(@RequestParam String id,Model model)
     {
-        return "editProduct";
+        model.addAttribute("product",productService.findById(Integer.parseInt(id)));
+        model.addAttribute("suppliers",supplierService.findAll());
+        return "updateProduct";
     }
 
-    @PostMapping("/editProduct/{id}")
-    public String editProduct(@PathVariable("id") int id, @ModelAttribute Product product)
+    @PostMapping("/editProduct")
+    public String editProduct(@RequestParam String id, @ModelAttribute Product product, @RequestParam String supplierId)
     {
+        product.setSupplier(supplierService.findById(Integer.parseInt(supplierId)));
         productService.updateProduct(product.getId(),product);
-        return "";
+        return "redirect:/";
     }
 
     @GetMapping("/deleteProduct")
@@ -117,12 +125,15 @@ public class StoreController {
     }
 
     @GetMapping("/cart")
-    public String showCart() {
+    public String showCart(Model model,@RequestParam Optional<String> id)
+    {
+        if (id.isPresent() && id.get().equals("success"))
+        model.addAttribute("success",true);
         return "shoppingcart";
     }
 
     @PostMapping("/buy")
-    public String buy(@RequestParam(value="ids[]") Integer[] ids, @RequestParam(value="counts[]") Integer[] counts)
+    public String buy(@RequestParam(value="ids[]") Integer[] ids, @RequestParam(value="counts[]") Integer[] counts, Model model)
     {
         User user = userService.findByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
 
@@ -135,9 +146,9 @@ public class StoreController {
             boughtProductsService.addBoughtProduct(boughtProducts);
         }
 
-
-        return "redirect:/shoppingcart";
+        return "shoppingcart";
     }
+
 
     @GetMapping("/statistics")
     public String statistics(Model model)
@@ -155,6 +166,13 @@ public class StoreController {
     public ResponseEntity<List<BoughtProduct>> getData2() {
         List<BoughtProduct> results = boughtProductsService.getBoughtProductsByCategory();
         return new ResponseEntity<List<BoughtProduct>>(results, HttpStatus.OK);
+    }
+
+    @GetMapping("/getPrice")
+    public ResponseEntity<Double> getPrice(@RequestParam String id) {
+        Product product = productService.findById(Integer.parseInt(id));
+        if (product == null || product.isDeleted()) return new ResponseEntity<Double>(0., HttpStatus.OK); ;
+        return new ResponseEntity<Double>(product.getFinalPrice(), HttpStatus.OK);
     }
 
 }

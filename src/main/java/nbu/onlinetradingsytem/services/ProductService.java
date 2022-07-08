@@ -44,8 +44,28 @@ public class ProductService {
             product.setPrice(productDTO.getPrice());
         }
 
+        if (productDTO.getImageURL() != null) {
+            product.setImageURL(productDTO.getImageURL());
+        }
+
+        if (productDTO.getCategory() != null) {
+            product.setCategory(productDTO.getCategory());
+        }
+
         if (productDTO.getSupplier() != null) {
             product.setSupplier(productDTO.getSupplier());
+        }
+
+        if (productDTO.getStartDiscount() != null) {
+            product.setStartDiscount(productDTO.getStartDiscount());
+        }
+
+        if (productDTO.getEndDiscount() != null) {
+            product.setEndDiscount(productDTO.getEndDiscount());
+        }
+
+        if (productDTO.getDiscount() != 0.) {
+            product.setDiscount(String.valueOf(productDTO.getDiscount()));
         }
 
         productRepository.save(product);
@@ -53,7 +73,9 @@ public class ProductService {
 
     @Transactional
     public void deleteProduct(Product product) {
-        productRepository.delete(product);
+        product.setDeleted(true);
+        productRepository.save(product);
+//        productRepository.delete(product);
     }
 
 }
