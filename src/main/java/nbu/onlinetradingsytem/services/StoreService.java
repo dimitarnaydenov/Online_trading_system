@@ -21,6 +21,13 @@ public class StoreService {
 
     @Transactional
     public List<Store> findAll() {
+        if(storeRepository.findAll().isEmpty())
+        {
+            Store store = new Store();
+            store.setName("Empty");
+            store.setAddress("Empty");
+            addStore(store);
+        }
         return storeRepository.findAll();
     }
 
@@ -30,7 +37,7 @@ public class StoreService {
     @Transactional
     public void editStore(Store storeDTO) {
 
-        Store store = storeRepository.findById(1).get();
+        Store store = storeRepository.findAll().get(0);
 
         if (storeDTO.getName() != null ) {
             store.setName(storeDTO.getName());
@@ -40,6 +47,6 @@ public class StoreService {
             store.setAddress(storeDTO.getAddress());
         }
 
-        storeRepository.save(storeDTO);
+        storeRepository.save(store);
     }
 }
